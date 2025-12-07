@@ -1,0 +1,200 @@
+/* ======= BASE ======= */
+:root {
+  --yt-bg: #0f0f0f;
+  --yt-surface: #212121;
+  --yt-surface-2: #181818;
+  --yt-border: #3d3d3d;
+  --yt-text: #fff;
+  --yt-text-muted: #aaaaaa;
+  --yt-accent: #3ea6ff;
+  --yt-btn: #272727;
+  --yt-btn-hover: #3f3f3f;
+  --yt-danger: #cc0000;
+}
+
+body {
+  margin: 0;
+  padding: 1.5rem;
+  background: var(--yt-bg);
+  color: var(--yt-text);
+  font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+/* ======= HEADER / TÍTULO ======= */
+.titulo {
+  margin-bottom: 1.8rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.titulo::before {
+  content: "";
+  width: 6px;
+  height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #e50914, #f5c518);
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.6);
+}
+
+.titulo h1 {
+  font-family: "Bebas Neue", system-ui, sans-serif;
+  color: #fff;
+  font-size: 2.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ======= SECCIÓN AGREGAR COMIDA ======= */
+.agregarComida {
+  background: var(--yt-surface);
+  padding: 1.2rem 1.3rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.agregarComida label {
+  color: var(--yt-text);
+  font-size: 0.95rem;
+}
+
+.agregarComida input,
+.agregarComida select {
+  background: #0f0f0f;
+  border: 1px solid #3d3d3d;
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+/* ======= BOTONES ======= */
+button {
+  background: var(--yt-btn);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+button:hover {
+  background: var(--yt-btn-hover);
+}
+
+button:active {
+  background: #4d4d4d;
+  transform: scale(0.995);
+}
+
+/* Botón principal (agregar comida) */
+.agregarComida button {
+  align-self: flex-start;
+  background: #3ea6ff;
+  color: #000;
+  border: none;
+}
+
+.agregarComida button:hover {
+  background: #67b8ff;
+}
+
+/* ======= LISTAS DE COMIDAS ======= */
+.listas-comidas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.columna {
+  flex: 1 1 260px;
+  background: var(--yt-surface);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.columna h2 {
+  margin: 0 0 0.6rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Podés cambiar colores si querés */
+.columna-saludable h2 {
+  color: #7bd88f;
+}
+.columna-chatarra h2 {
+  color: #ffb347;
+}
+
+.muro-comidas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Card de cada comida */
+.comida-card {
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  background: var(--yt-surface-2);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.comida-card h3 {
+  margin: 0 0 0.35rem 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.comida-tipo {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #333;
+  color: #eee;
+}
+
+.columna-saludable .comida-tipo {
+  background: #214c2f;
+  color: #a4f3bf;
+}
+
+.columna-chatarra .comida-tipo {
+  background: #4c2c21;
+  color: #ffd2a4;
+}
+
+.comida-fecha {
+  margin: 0.3rem 0 0 0;
+  font-size: 0.75rem;
+  color: var(--yt-text-muted);
+}
+
+/* ====== RESPONSIVO ====== */
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  .agregarComida {
+    padding: 1rem;
+  }
+
+  .columna {
+    padding: 0.9rem 1rem;
+  }
+}
