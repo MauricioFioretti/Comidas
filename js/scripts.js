@@ -704,11 +704,42 @@ async function runConnectFlow({ interactive, prompt } = { interactive: false, pr
   }
 }
 
-btnConnect.addEventListener("click", async () => {
-  // ✅ forzamos selector de cuenta SIEMPRE
-  const res = await runConnectFlow({ interactive: true, prompt: "select_account" });
-  if (!res?.ok && !res?.canceled) {
-    console.warn("No se pudo conectar:", res);
+btnConnect.addEventListener("click", () => {
+  // ✅ iOS/Safari: el popup SOLO se abre si se dispara "sin await" dentro del click.
+  // Por eso abrimos el selector de cuenta INMEDIATO y recién luego continuamos el flow.
+
+  try {
+    setSync("saving", "Abriendo Google…");
+
+    // Hint (si existe) para acelerar. Pero en "select_account" igual muestra selector.
+    const hintEmail = (loadStoredOAuthEmail() || "").trim().toLowerCase();
+
+    // 👇 Esto abre el popup inmediatamente (gesto de usuario).
+    requestAccessToken({
+      prompt: "select_account",
+      hint: hintEmail || undefined
+    })
+      .then(async () => {
+        // Ya tenemos token nuevo en oauthAccessToken/oauthExpiresAt (por requestAccessToken)
+        // Validamos + guardamos email + actualizamos UI + cargamos lista
+        await verifyBackendAccessOrThrow(true);
+        btnRefresh.style.display = "none";
+        await cargarComidasDesdeAPI();
+      })
+      .catch((e) => {
+        // Si canceló el popup o fue bloqueado, lo manejamos acá.
+        if (e?.isCanceled) {
+          setSync("offline", "Conexión cancelada");
+        } else {
+          setSync("offline", "Necesita Conectar");
+        }
+        btnRefresh.style.display = "inline-block";
+        console.warn("No se pudo conectar:", e);
+      });
+  } catch (e) {
+    setSync("offline", "Necesita Conectar");
+    btnRefresh.style.display = "inline-block";
+    console.warn("Error abriendo popup:", e);
   }
 });
 
