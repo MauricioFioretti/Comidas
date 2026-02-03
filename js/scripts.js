@@ -27,6 +27,7 @@ const LS_OAUTH_EMAIL = "comidas_oauth_email_v1";  // email para hint
 // Tipos
 const TIPO_SALUDABLE = "saludable";
 const TIPO_CHATARRA  = "chatarra";
+const TIPO_MERIENDA  = "merienda";
 
 // =====================
 // OAuth state
@@ -470,6 +471,11 @@ optionChatarra.value = TIPO_CHATARRA;
 optionChatarra.innerText = "Chatarra / antojo";
 selectTipo.appendChild(optionChatarra);
 
+const optionMerienda = document.createElement("option");
+optionMerienda.value = TIPO_MERIENDA;
+optionMerienda.innerText = "Merienda";
+selectTipo.appendChild(optionMerienda);
+
 seccionAgregar.appendChild(selectTipo);
 
 // Botón: agregar comida
@@ -495,7 +501,7 @@ const muroSaludables = document.createElement("div");
 muroSaludables.classList = "muro-comidas";
 colSaludable.appendChild(muroSaludables);
 
-// Columna: chatarra / no saludable
+// Columna: chatarra / antojo
 const colChatarra = document.createElement("div");
 colChatarra.classList = "columna columna-chatarra";
 seccionListas.appendChild(colChatarra);
@@ -507,6 +513,19 @@ colChatarra.appendChild(tituloChatarra);
 const muroChatarra = document.createElement("div");
 muroChatarra.classList = "muro-comidas";
 colChatarra.appendChild(muroChatarra);
+
+// Columna: meriendas (al final)
+const colMerienda = document.createElement("div");
+colMerienda.classList = "columna columna-merienda";
+seccionListas.appendChild(colMerienda);
+
+const tituloMerienda = document.createElement("h2");
+tituloMerienda.innerText = "Meriendas";
+colMerienda.appendChild(tituloMerienda);
+
+const muroMerienda = document.createElement("div");
+muroMerienda.classList = "muro-comidas";
+colMerienda.appendChild(muroMerienda);
 
 // ================== FUNCIONES API ==================
 
@@ -525,10 +544,12 @@ function renderLista(comidas, contenedor) {
     // Etiqueta tipo (pill)
     const pill = document.createElement("span");
     pill.classList.add("comida-tipo");
-    pill.innerText =
-      (item.tipo || "").toLowerCase() === TIPO_SALUDABLE
-        ? "Saludable"
-        : "Antojo";
+
+    const t = (item.tipo || "").toLowerCase();
+    if (t === TIPO_SALUDABLE) pill.innerText = "Saludable";
+    else if (t === TIPO_MERIENDA) pill.innerText = "Merienda";
+    else pill.innerText = "Antojo";
+
     card.appendChild(pill);
 
     // Fecha si existe
@@ -560,13 +581,15 @@ async function cargarComidasDesdeAPI() {
 
     const comidas = Array.isArray(resp?.items) ? resp.items : [];
 
-    // Separar en saludables / chatarra
+    // Separar en saludables / chatarra / meriendas
     const saludables = [];
     const chatarra = [];
+    const meriendas = [];
 
     comidas.forEach((item) => {
       const tipo = (item.tipo || "").toLowerCase();
       if (tipo === TIPO_SALUDABLE) saludables.push(item);
+      else if (tipo === TIPO_MERIENDA) meriendas.push(item);
       else if (tipo === TIPO_CHATARRA) chatarra.push(item);
     });
 
@@ -576,9 +599,11 @@ async function cargarComidasDesdeAPI() {
 
     saludables.sort(ordenarPorNombre);
     chatarra.sort(ordenarPorNombre);
+    meriendas.sort(ordenarPorNombre);
 
     renderLista(saludables, muroSaludables);
     renderLista(chatarra, muroChatarra);
+    renderLista(meriendas, muroMerienda);
 
     setSync("ok", "Listo ✅");
     btnRefresh.style.display = "none";

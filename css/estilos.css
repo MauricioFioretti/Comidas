@@ -311,7 +311,7 @@ button:active {
 /* ======= LISTAS DE COMIDAS ======= */
 .listas-comidas {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr; /* ✅ ahora 3 columnas */
   gap: 1rem;
 }
 
@@ -345,6 +345,10 @@ button:active {
 
 .columna-chatarra h2 {
   color: #ffb347;
+}
+
+.columna-merienda h2 {
+  color: #a78bfa; /* violeta suave lindo */
 }
 
 .muro-comidas {
@@ -388,6 +392,11 @@ button:active {
 .columna-chatarra .comida-tipo {
   background: #4c2c21;
   color: #ffd2a4;
+}
+
+.columna-merienda .comida-tipo {
+  background: #2a1f4a; /* violeta oscuro */
+  color: #e9ddff;      /* violeta claro */
 }
 
 .comida-fecha {
